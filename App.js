@@ -1,21 +1,43 @@
-import { setStatusBarBackgroundColor } from "expo-status-bar";
-import { View, Text, Image, ImageBackground, ScrollView, Button, Pressable } from "react-native";
+import { useState } from "react";
+import { View, Text, Image, ImageBackground, ScrollView, Button, Pressable, Modal, StatusBar, ActivityIndicator, Alert } from "react-native";
+import Greet from "./components/Greet";
 const logoImg = require('./assets/adaptive-icon.png')
 
 export default function App() {
+  const [isModalVisible, setIsModalVisible] = useState(false)
+  //const [isStatusBarVisible, setIsStatusBarVisible] = useState(true)
   return (
     <View style={{ flex: 1, backgroundColor: "plum", padding: 40 }}>
+      <StatusBar backgroundColor="black" />
+      
       <ScrollView>
+        <Greet name="wakeel" />
         <Text>
           <Text style={{ color: "white" }}> Hello
           </Text> weka
         </Text>
         <Button
           title="press"
-          onPress={() => console.log("button pressed")}
+          onPress={() => setIsModalVisible(true)}
           color={"midnightblue"}
           disabled={false}
         />
+        <Button
+          title="Alert"
+          onPress={() => Alert.alert("that's it", "we have created ana alert", [
+            {
+              text: "Cancel",
+              onPress: () => console.log("cancel")
+            },
+            {
+              text: "Ok",
+              onPress: () => console.log("ok")
+            }
+          ])}
+          color={"blue"}
+          disabled={false}
+        />
+        <ActivityIndicator size="large" color="midnightblue"/>
         <Pressable onPress={() => console.log("image 1 pressed")}>
           <Image source={logoImg} style={{ width: 300, height: 300 }} />
         </Pressable>
@@ -42,6 +64,20 @@ export default function App() {
           <Image source={logoImg} style={{ width: 300, height: 300 }} />
         </Pressable>
       </ScrollView>
+
+      <Modal 
+      visible={isModalVisible} 
+      onRequestClose={() => setIsModalVisible(false)}
+      animationType="fade"
+      >
+        <View style={{ flex: 1, backgroundColor: "lightblue", padding: 40 }}>
+          <Button
+            title="click to close"
+            onPress={() => setIsModalVisible(false)}
+          />
+          <Text> Modal</Text>
+        </View>
+      </Modal>
     </View>
   )
 }
